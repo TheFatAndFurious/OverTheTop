@@ -13,19 +13,28 @@ public class NewHttpServer {
 
     public static void main(String[] var0) throws IOException {
 
-        final int ORIGINAL_PORT = 8080;
         Scanner scanner = new Scanner(System.in);
+        new Thread(()-> {
+            while(true){
+                System.out.println("enter a command");
+                String command = scanner.nextLine();
+            }
+        }).start();
+
+        final int ORIGINAL_PORT = 8080;
         System.out.println("How many servers should we start fam ?");
         int numberOfServers = scanner.nextInt();
 
+
         for (int i = 0; i < numberOfServers; i++) {
             var port = ORIGINAL_PORT + i;
-            HttpServer var1 = HttpServer.create(new InetSocketAddress(port), 0);
-            var1.createContext("/", new TestHandler(i));
-            var1.setExecutor((Executor) null);
+            HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
+            server.createContext("/", new TestHandler(i));
+            server.setExecutor((Executor) null);
             System.out.println("Server started on port:" + port);
-            var1.start();
+            server.start();
         }
+        System.out.println("what do we do now ?");
 
     }
         static class TestHandler implements HttpHandler {
