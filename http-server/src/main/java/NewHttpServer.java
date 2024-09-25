@@ -18,6 +18,7 @@ public class NewHttpServer {
             while(true){
                 System.out.println("enter a command");
                 String command = scanner.nextLine();
+                ProcessCommand(command);
             }
         }).start();
 
@@ -51,5 +52,17 @@ public class NewHttpServer {
                 OutputStream var3 = var1.getResponseBody();
                 var3.write(var2.getBytes());
             }
+        }
+
+        private static void ProcessCommand(String command) {
+            switch(command) {
+                case  "start":
+                    System.out.println("let's START");
+                    break;
+                case  "kill":
+                    System.out.println("let's kill");
+                    break;
+            }
+
         }
 }
