@@ -61,6 +61,17 @@ public class NewHttpServer {
     }
 
     private static void ProcessCommand(String command) {
+            String[] commands = command.split(" ");
+            if (commands.length == 0) {
+                System.out.println("Invalid command");
+                return;
+            }
+
+            String requiredAction = commands[1];
+            if (requiredAction.equals("kill")) {
+                KillServerArguments args = null;
+                // continue here
+            }
         String message = switch (command) {
             case "start" -> "let'start";
             case "kill" -> "let's kill";
@@ -84,7 +95,4 @@ public class NewHttpServer {
 
     }
 
-    private static void killServer(int portNumber) {
-
-    }
 }
