@@ -5,6 +5,9 @@ import com.sun.net.httpserver.HttpServer;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Executor;
 
@@ -12,6 +15,7 @@ public class NewHttpServer {
 
 
     static int ORIGINAL_PORT = 8080;
+    static HashMap<Integer, HttpServer> activeServers = new HashMap<Integer, HttpServer>();
 
     public static void main(String[] var0) throws IOException {
 
@@ -74,6 +78,8 @@ public class NewHttpServer {
             server.setExecutor((Executor) null);
             System.out.println("Server started on port:" + port);
             server.start();
+            activeServers.put(port, server);
+            System.out.println(activeServers);
         }
 
     }
