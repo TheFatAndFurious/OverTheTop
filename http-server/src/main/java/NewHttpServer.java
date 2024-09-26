@@ -83,4 +83,8 @@ public class NewHttpServer {
         }
 
     }
+
+    private static void killServer(int portNumber) {
+
+    }
 }
