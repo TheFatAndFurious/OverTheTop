@@ -67,10 +67,15 @@ public class NewHttpServer {
                 return;
             }
 
-            String requiredAction = commands[1];
+            String requiredAction = commands[1].toLowerCase();
+            KillServerArguments args = null;
             if (requiredAction.equals("kill")) {
-                KillServerArguments args = null;
-                // continue here
+                // kill some servers
+            }
+            if (requiredAction.equals("start")){
+                // do start stuff
+            } else {
+                System.out.println("Wrong command, use either kill or start");
             }
         String message = switch (command) {
             case "start" -> "let'start";
