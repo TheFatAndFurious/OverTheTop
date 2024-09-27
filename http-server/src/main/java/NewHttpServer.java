@@ -61,29 +61,27 @@ public class NewHttpServer {
     }
 
     private static void ProcessCommand(String command) {
-            String[] commands = command.split(" ");
-            if (commands.length == 0) {
-                System.out.println("Invalid command");
-                return;
-            }
+        String[] commands = command.split(" ");
+        if (commands.length == 0) {
+            System.out.println("Invalid command");
+            return;
+        }
 
-            String requiredAction = commands[1].toLowerCase();
-            KillServerArguments args = null;
-            if (requiredAction.equals("kill")) {
-                // kill some servers
-            }
-            if (requiredAction.equals("start")){
-                // do start stuff
-            } else {
-                System.out.println("Wrong command, use either kill or start");
-            }
-        String message = switch (command) {
-            case "start" -> "let'start";
-            case "kill" -> "let's kill";
-            default -> "we're cooked";
-        };
-        System.out.println(message);
-
+        String requiredAction = commands[1].toLowerCase();
+        KillServerArguments args = null;
+        if (requiredAction.equals("kill")) {
+            // kill some servers
+            // check if there is a -p flag or an int
+            // -p flag means a specific port is targeted for shutdown
+            // just an int means we will shut down multiple servers at once
+            // we will target the highest ports for shutdown if no port is specified
+        }
+        if (requiredAction.equals("start")){
+            // do start stuff
+            // check whether we need to refactor StartServer method or use a new one
+        } else {
+            System.out.println("Wrong command, use either kill or start");
+        }
     }
 
     private static void StartServer(int numberOfServersToStart) throws IOException {
