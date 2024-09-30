@@ -15,13 +15,18 @@ public class NewHttpServer {
 
 
     static int ORIGINAL_PORT = 8080;
+    static int LAST_PORT = 9999;
     static HashMap<Integer, HttpServer> activeServers = new HashMap<Integer, HttpServer>();
+    static ArrayList<Integer> availableServers = new ArrayList<>();
+
 
     public static void main(String[] var0) throws IOException {
 
         Scanner scanner = new Scanner(System.in);
         int numberOfServersToBeginWith = 0;
-
+        for (int i = ORIGINAL_PORT; i < LAST_PORT; i++){
+            availableServers.add(i);
+        }
         do {
             System.out.println("How many servers should we begin with fam ?");
             numberOfServersToBeginWith = scanner.nextInt();
@@ -68,7 +73,7 @@ public class NewHttpServer {
         }
 
         String requiredAction = commands[1].toLowerCase();
-        KillServerArguments args = null;
+        //KillServerArguments args = null;
         if (requiredAction.equals("kill")) {
             // kill some servers
             // check if there is a -p flag or an int
@@ -95,7 +100,6 @@ public class NewHttpServer {
             activeServers.put(port, server);
             System.out.println(activeServers);
         }
-
     }
 
 }
