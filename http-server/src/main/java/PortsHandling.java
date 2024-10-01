@@ -25,5 +25,15 @@ public class PortsHandling {
         }
     }
 
+    public synchronized void releasePort(int portNumber) throws Exception{
+        if (portNumber >= FIRST_PORT && portNumber <= LAST_PORT && !availablePorts.contains(portNumber)){
+            availablePorts.add(portNumber);
+        } else {
+            throw new Exception("Port outside of range or already available");
+        }
+    }
 
+    public synchronized boolean isPortAvailable(int portNumber) {
+        return availablePorts.contains(portNumber);
+    }
 }
