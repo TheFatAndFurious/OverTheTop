@@ -24,6 +24,8 @@ public class NewHttpServer {
 
         Scanner scanner = new Scanner(System.in);
         int numberOfServersToBeginWith = 0;
+        PortsHandling portsHandling = new PortsHandling();
+        ServerManager serverManager = new ServerManager(portsHandling);
         for (int i = ORIGINAL_PORT; i < LAST_PORT; i++){
             availableServers.add(i);
         }
@@ -35,7 +37,7 @@ public class NewHttpServer {
                 }
 
         } while (numberOfServersToBeginWith <= 0);
-        StartServer(numberOfServersToBeginWith);
+        serverManager.StartServer(numberOfServersToBeginWith);
 
 
         new Thread(() -> {
@@ -89,17 +91,5 @@ public class NewHttpServer {
         }
     }
 
-    private static void StartServer(int numberOfServersToStart) throws IOException {
-        for (int i = 0; i < numberOfServersToStart; i++) {
-            var port = ORIGINAL_PORT + i;
-            HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-            server.createContext("/", new TestHandler(i));
-            server.setExecutor((Executor) null);
-            System.out.println("Server started on port:" + port);
-            server.start();
-            activeServers.put(port, server);
-            System.out.println(activeServers);
-        }
-    }
 
 }
