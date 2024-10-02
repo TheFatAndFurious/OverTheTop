@@ -25,13 +25,26 @@ public class PortsHandling {
         }
     }
 
-    public synchronized void releasePort(int portNumber) throws Exception{
+    public synchronized void releaseSinglePort(Integer portNumber) throws Exception{
         if (portNumber >= FIRST_PORT && portNumber <= LAST_PORT && !availablePorts.contains(portNumber)){
             availablePorts.add(portNumber);
         } else {
             throw new Exception("Port outside of range or already available");
         }
     }
+
+    public synchronized void releaseMultiplePorts(){
+        Integer headOfQueue = availablePorts.peek();
+        if (headOfQueue == null){
+            headOfQueue = LAST_PORT + 1;
+        }
+        if(headOfQueue == FIRST_PORT) {
+            System.out.println("No servers to kill");
+            return;
+        }
+        availablePorts.add(headOfQueue - 1);
+    }
+
 
     public synchronized boolean isPortAvailable(int portNumber) {
         return availablePorts.contains(portNumber);

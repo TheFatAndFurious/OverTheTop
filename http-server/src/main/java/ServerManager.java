@@ -26,11 +26,14 @@ public class ServerManager {
         }
     }
 
-    public void StopSingleServer(Integer portNumber){
+    public void StopSingleServer(Integer portNumber) throws Exception {
         // stop a single server
+        portsHandling.releaseSinglePort(portNumber);
+        System.out.println("Port has been released");
     }
 
     public void StopMultipleServers(Integer numberOfPortsToStop){
         // stop multiple servers
+        portsHandling.releaseSinglePort();
     }
 }
