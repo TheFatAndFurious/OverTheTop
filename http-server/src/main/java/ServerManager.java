@@ -34,6 +34,8 @@ public class ServerManager {
 
     public void StopMultipleServers(Integer numberOfPortsToStop){
         // stop multiple servers
-        portsHandling.releaseSinglePort();
+        portsHandling.releaseMultiplePorts(numberOfPortsToStop);
+        // TODO: add the number of servers killed for a better feedback
+        System.out.println("Servers have been shut down");
     }
 }

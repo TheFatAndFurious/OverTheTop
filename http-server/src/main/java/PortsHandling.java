@@ -33,16 +33,22 @@ public class PortsHandling {
         }
     }
 
-    public synchronized void releaseMultiplePorts(){
-        Integer headOfQueue = availablePorts.peek();
-        if (headOfQueue == null){
-            headOfQueue = LAST_PORT + 1;
-        }
-        if(headOfQueue == FIRST_PORT) {
-            System.out.println("No servers to kill");
+    public synchronized void releaseMultiplePorts(Integer numberOrPorts){
+        if (numberOrPorts <= 0){
+            System.out.println("You need to kill at least 1 server buddy");
             return;
         }
-        availablePorts.add(headOfQueue - 1);
+        for (int i = numberOrPorts; i > 0; i--){
+            Integer headOfQueue = availablePorts.peek();
+            if (headOfQueue == null){
+                headOfQueue = LAST_PORT + 1;
+            }
+            if(headOfQueue == FIRST_PORT) {
+                System.out.println("No servers to kill");
+                return;
+            }
+            availablePorts.add(headOfQueue - 1);
+        }
     }
 
 
