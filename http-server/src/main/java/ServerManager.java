@@ -30,8 +30,14 @@ public class ServerManager {
     }
 
     public void StopSingleServer() throws Exception {
-        portsHandling.releasePort();
-        System.out.println("Port has been released");
+        Integer portReleased = portsHandling.releasePort();
+        if (!serverHashMap.containsKey(portReleased)){
+            System.out.println("Targeted port to kill not found");
+        }
+        HttpServer serverToKill = serverHashMap.get(portReleased);
+        serverToKill.stop(0);
+        serverHashMap.remove(portReleased);
+        System.out.println("Port " + portReleased + " has been released");
     }
 
     public void StopMultipleServers(Integer numberOfPortsToStop){
