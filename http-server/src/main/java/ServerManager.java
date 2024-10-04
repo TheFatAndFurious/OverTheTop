@@ -29,16 +29,8 @@ public class ServerManager {
         }
     }
 
-    public void StopSingleServer(Integer portNumber) throws Exception {
-        if (!serverHashMap.containsKey(portNumber)){
-            System.out.println("No running server using that port");
-            return;
-        }
-        serverHashMap.forEach(
-                (key, value)
-                        -> if(Integer == portNumber)
-                );
-        portsHandling.releaseSinglePort(portNumber);
+    public void StopSingleServer() throws Exception {
+        portsHandling.releasePort();
         System.out.println("Port has been released");
     }
 
