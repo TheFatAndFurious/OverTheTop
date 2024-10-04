@@ -3,6 +3,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Queue;
 
+// TODO: find documentation regarding the ports range available on localhost
+
 public class PortsHandling {
     // ports range
     private final int FIRST_PORT = 8080;
@@ -19,19 +21,23 @@ public class PortsHandling {
     public synchronized int reservePort() throws Exception {
         Integer port = availablePorts.poll();
         if (port != null) {
-            return  port;
+            return port;
         } else {
             throw new Exception("No ports available");
         }
     }
 
-    public synchronized void releaseSinglePort(Integer portNumber) throws Exception{
-        if (portNumber >= FIRST_PORT && portNumber <= LAST_PORT && !availablePorts.contains(portNumber)){
-            availablePorts.add(portNumber);
+    public synchronized void releasePort() throws Exception{
+        Integer portToRelease = availablePorts.peek();
+        if (portToRelease != null && portToRelease != FIRST_PORT){
+            portToRelease -= 1;
+            availablePorts.add(portToRelease);
         } else {
-            throw new Exception("Port outside of range or already available");
+            throw new Exception("No port to release");
         }
     }
+
+
 
     public synchronized void releaseMultiplePorts(Integer numberOrPorts){
         if (numberOrPorts <= 0){
