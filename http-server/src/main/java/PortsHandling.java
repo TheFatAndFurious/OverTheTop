@@ -7,8 +7,8 @@ import java.util.Queue;
 
 public class PortsHandling {
     // ports range
-    private final int FIRST_PORT = 8080;
-    private final int LAST_PORT = 9999;
+    public int FIRST_PORT = 8080;
+    public int LAST_PORT = 9999;
     // available ports
     private Queue<Integer> availablePorts;
 
@@ -58,10 +58,6 @@ public class PortsHandling {
         }
             return portsReleased;
     }
-
-    public synchronized void releaseMultiplePorts(Integer numberOrPorts){
-    }
-
 
     public synchronized boolean isPortAvailable(int portNumber) {
         return availablePorts.contains(portNumber);
