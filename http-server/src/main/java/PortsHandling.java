@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Queue;
+import java.util.*;
 
 // TODO: find documentation regarding the ports range available on localhost
 
@@ -10,9 +7,13 @@ public class PortsHandling {
     public int FIRST_PORT = 8080;
     public int LAST_PORT = 9999;
     // available ports
-    private Queue<Integer> availablePorts;
+    private Queue<Integer> availablePorts = new LinkedList<>()
+
+    {
+    };
 
     public PortsHandling(){
+
         for (int i = FIRST_PORT; i <= LAST_PORT; i++){
             availablePorts.add(i);
         }

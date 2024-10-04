@@ -19,7 +19,7 @@ public class ServerManager {
             try {
                 var port = portsHandling.reservePort();
                 HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-                server.createContext("/", new NewHttpServer.TestHandler(i));
+                server.createContext("/", new HandlersManager(i));
                 server.setExecutor((Executor) null);
                 server.start();
                 serverHashMap.put(port, server);
