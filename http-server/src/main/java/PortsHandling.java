@@ -7,7 +7,7 @@ public class PortsHandling {
     public int FIRST_PORT = 8080;
     public int LAST_PORT = 9999;
     // available ports
-    private Queue<Integer> availablePorts = new LinkedList<>()
+    private Deque<Integer> availablePorts = new LinkedList<>()
 
     {
     };
@@ -15,12 +15,12 @@ public class PortsHandling {
     public PortsHandling(){
 
         for (int i = FIRST_PORT; i <= LAST_PORT; i++){
-            availablePorts.add(i);
+            availablePorts.addLast(i);
         }
     }
 
     public synchronized int reservePort() throws Exception {
-        Integer port = availablePorts.poll();
+        Integer port = availablePorts.pollFirst();
         if (port != null) {
             return port;
         } else {
@@ -29,10 +29,13 @@ public class PortsHandling {
     }
 
     public synchronized Integer releasePort() throws Exception{
-        Integer portToRelease = availablePorts.peek();
+        Integer portToRelease = availablePorts.peekFirst();
+        System.out.println("releasePort portToRelease == " + portToRelease);
         if (portToRelease != null && portToRelease != FIRST_PORT){
             portToRelease -= 1;
-            availablePorts.add(portToRelease);
+            System.out.println("port to release -1 == " + portToRelease);
+            availablePorts.addFirst(portToRelease);
+            System.out.println(availablePorts);
             return portToRelease;
         } else {
             throw new Exception("No port to release");
@@ -46,7 +49,7 @@ public class PortsHandling {
         }
         ArrayList<Integer> portsReleased = new ArrayList<>();
         for (int i = numberOfPorts; i > 0; i--){
-            Integer headOfQueue = availablePorts.peek();
+            Integer headOfQueue = availablePorts.peekFirst();
             if (headOfQueue == null){
                 headOfQueue = LAST_PORT + 1;
             }
@@ -54,8 +57,8 @@ public class PortsHandling {
                 System.out.println("No servers to kill");
                 return null;
             }
-            availablePorts.add(headOfQueue - 1);
-            portsReleased.add(availablePorts.peek());
+            availablePorts.addFirst(headOfQueue - 1);
+            portsReleased.add(availablePorts.peekFirst() -1);
         }
             return portsReleased;
     }
