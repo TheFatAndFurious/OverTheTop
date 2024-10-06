@@ -7,7 +7,7 @@ public class PortsHandling {
     public int FIRST_PORT = 8080;
     public int LAST_PORT = 9999;
     // available ports
-    private Deque<Integer> availablePorts = new LinkedList<>()
+    private final Deque<Integer> availablePorts = new LinkedList<>()
 
     {
     };
@@ -30,10 +30,8 @@ public class PortsHandling {
 
     public synchronized Integer releasePort() throws Exception{
         Integer portToRelease = availablePorts.peekFirst();
-        System.out.println("releasePort portToRelease == " + portToRelease);
         if (portToRelease != null && portToRelease != FIRST_PORT){
             portToRelease -= 1;
-            System.out.println("port to release -1 == " + portToRelease);
             availablePorts.addFirst(portToRelease);
             System.out.println(availablePorts);
             return portToRelease;
@@ -58,7 +56,7 @@ public class PortsHandling {
                 return null;
             }
             availablePorts.addFirst(headOfQueue - 1);
-            portsReleased.add(availablePorts.peekFirst() -1);
+            portsReleased.add(availablePorts.peekFirst());
         }
             return portsReleased;
     }

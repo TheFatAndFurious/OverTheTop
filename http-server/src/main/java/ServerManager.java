@@ -31,8 +31,11 @@ public class ServerManager {
     }
 
     public void StopSingleServer() throws Exception {
+        if(serverHashMap.isEmpty()){
+            System.out.println("No servers to stop");
+            return;
+        }
         Integer portReleased = portsHandling.releasePort();
-        System.out.println("stopSingleServer portReleased is: " + portReleased);
         if (!serverHashMap.containsKey(portReleased)){
             System.out.println("Targeted port to kill not found");
         }
@@ -53,11 +56,16 @@ public class ServerManager {
             return;
         }
         ArrayList<Integer> portsToRelease = portsHandling.releasePort(numberOfPortsToStop);
+        if(portsToRelease == null){
+            System.out.println("no servers to stop anymore");
+            return;
+        }
         int serversKilledCounter = 0;
-        System.out.println("serverHasmap is " + serverHashMap);
-        System.out.println("portsToRelease = " + portsToRelease);
         for (Integer port : portsToRelease) {
-            System.out.println("Port is: " + port);
+            if (serverHashMap.isEmpty()) {
+                System.out.println("All servers have been shut down");
+                return;
+            }
             if (serverHashMap.containsKey(port)){
                 HttpServer serverToKIll = serverHashMap.get(port);
                 serverToKIll.stop(0);
