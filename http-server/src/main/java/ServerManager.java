@@ -29,6 +29,15 @@ public class ServerManager {
         }
     }
 
+    public void ListRunningServers(){
+        if (serverHashMap.isEmpty()){
+            System.out.println("No servers currently running");
+        } else {
+            List<Integer> runningPorts = new ArrayList<>(serverHashMap.keySet());
+            System.out.println("Ports running: " + runningPorts);
+        }
+    }
+
     public void StopSingleServer() throws Exception {
         ServerStopper(1);
     }

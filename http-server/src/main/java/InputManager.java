@@ -61,6 +61,9 @@ public class InputManager {
                     System.out.println("Usage is: kill [number of servers]");
                 }
                 break;
+            case "list":
+                manager.ListRunningServers();
+                break;
         }
     }
 }
