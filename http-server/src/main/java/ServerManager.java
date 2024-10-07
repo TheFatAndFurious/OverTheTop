@@ -18,6 +18,7 @@ public class ServerManager {
         for (int i = 0; i < numberOfServers; i++) {
             try {
                 var port = portsHandling.reservePort();
+                System.out.println("port to start is; " + port);
                 HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
                 server.createContext("/", new HandlersManager(i));
                 server.setExecutor((Executor) null);
@@ -43,6 +44,18 @@ public class ServerManager {
         serverToKill.stop(0);
         serverHashMap.remove(portReleased);
         System.out.println("Port " + portReleased + " has been released");
+    }
+
+    public void ServerStopper(int numberOfPortsToClose) throws Exception {
+        if(serverHashMap.isEmpty()){
+            System.out.println("No servers to shutdown");
+            return;
+        }
+        if(numberOfPortsToClose < 0 ){
+            System.out.println("Negative numbers won't be tolerated buddy");
+            return;
+        }
+
     }
 
     public void StopMultipleServers(Integer numberOfPortsToStop) throws Exception{
