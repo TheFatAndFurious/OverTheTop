@@ -27,11 +27,15 @@ public class InputManager {
         switch (requiredAction){
             case "kill":
                 if(commands.length == 2){
-                    try{
+                    if(commands[1].equals("all")){
+                        manager.StopAllServers();
+                    } else {
+                    try {
                         int numberOfServersToKill = Integer.parseInt(commands[1]);
                         manager.StopMultipleServers(numberOfServersToKill);
                     } catch(NumberFormatException e) {
                         System.out.println("Invalid number: " + commands[1]);
+                    }
                     }
                 }
                 else if (commands.length == 1){

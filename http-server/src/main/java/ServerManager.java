@@ -2,8 +2,7 @@ import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.concurrent.Executor;
 
 public class ServerManager {
@@ -18,7 +17,6 @@ public class ServerManager {
         for (int i = 0; i < numberOfServers; i++) {
             try {
                 var port = portsHandling.reservePort();
-                System.out.println("port to start is; " + port);
                 HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
                 server.createContext("/", new HandlersManager(i));
                 server.setExecutor((Executor) null);
@@ -32,66 +30,44 @@ public class ServerManager {
     }
 
     public void StopSingleServer() throws Exception {
-        if(serverHashMap.isEmpty()){
-            System.out.println("No servers to stop");
-            return;
-        }
-        Integer portReleased = portsHandling.releasePort();
-        if (!serverHashMap.containsKey(portReleased)){
-            System.out.println("Targeted port to kill not found");
-        }
-        HttpServer serverToKill = serverHashMap.get(portReleased);
-        serverToKill.stop(0);
-        serverHashMap.remove(portReleased);
-        System.out.println("Port " + portReleased + " has been released");
+        ServerStopper(1);
     }
 
-    public void ServerStopper(int numberOfPortsToClose) throws Exception {
+    public void StopMultipleServers(Integer numberOfPortsToStop) throws Exception{
+        ServerStopper(numberOfPortsToStop);
+    }
+
+    public void StopAllServers() throws Exception{
+        ServerStopper(serverHashMap.size());
+    }
+
+    private void ServerStopper(int numberOfPortsToClose) throws Exception {
         if(serverHashMap.isEmpty()){
             System.out.println("No servers to shutdown");
             return;
         }
         if(numberOfPortsToClose < 0 ){
-            System.out.println("Negative numbers won't be tolerated buddy");
+            System.out.println("Negative numbers won't be tolerated here buddy");
             return;
         }
+        List<Integer> portsToStop = new ArrayList<>(serverHashMap.keySet());
+        portsToStop.sort(Collections.reverseOrder());
 
-    }
-
-    public void StopMultipleServers(Integer numberOfPortsToStop) throws Exception{
-        Integer maxNumberOfPorts = portsHandling.LAST_PORT - portsHandling.FIRST_PORT;
-        if (numberOfPortsToStop > maxNumberOfPorts){
-            System.out.println("You can not close more than " + maxNumberOfPorts);
-            return;
-        }
-        if (numberOfPortsToStop <= 0 ){
-            System.out.println("You need to close at least 1 port");
-            return;
-        }
-        ArrayList<Integer> portsToRelease = portsHandling.releasePort(numberOfPortsToStop);
-        if(portsToRelease == null){
-            System.out.println("no servers to stop anymore");
-            return;
-        }
-        int serversKilledCounter = 0;
-        for (Integer port : portsToRelease) {
-            if (serverHashMap.isEmpty()) {
-                System.out.println("All servers have been shut down");
-                return;
+        int serversStopped = 0;
+        for (int port : portsToStop){
+            if (serversStopped == numberOfPortsToClose){
+                break;
             }
-            if (serverHashMap.containsKey(port)){
-                HttpServer serverToKIll = serverHashMap.get(port);
-                serverToKIll.stop(0);
+            HttpServer server = serverHashMap.get(port);
+            if (server != null){
+                server.stop(0);
                 serverHashMap.remove(port);
-                serversKilledCounter ++;
-            } else {
-                System.out.println("Server not found");
+                portsHandling.releasePort(port);
+                serversStopped ++;
+                System.out.println("Stopped server on port: " + port);
             }
         }
-        if (serversKilledCounter == 0) {
-            System.out.println("No servers have been shut down");
-        } else {
-            System.out.println(serversKilledCounter + " servers have been shut down");
-        }
+        System.out.println("Total servers stopped: " + serversStopped);
     }
+
 }
